@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey">#919191</color>
     <color name="dark">#141922</color>
     <color name="lightGreen">#DEEBDA</color>
     <color name="darkBlue">#060E1E</color>
@@ -9,4 +10,6 @@
     <color name="green">#3A803C</color>
     <color name="red">#EB4B4B</color>
     <color name="activity_bg_color">@color/lightGreen</color>
+    <color name="text_color">@color/white</color>
+    <color name="bottom_nav_bg_color">@color/white</color>
 </resources>

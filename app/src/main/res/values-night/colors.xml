@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="activity_bg_color">@color/darkBlue</color>
+    <color name="text_color">@color/darkBlue</color>
+    <color name="bottom_nav_bg_color">@color/dark</color>
 </resources>
