@@ -4,8 +4,13 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
 
-        <item name="android:statusBarColor">@color/lightGreen</item>
+        <item name="android:statusBarColor">@color/blue</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">#254875</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="floatingActionButtonStyle">@style/fab_style</item>
+        <item name="android:homeAsUpIndicator">@drawable/back</item>
     </style>
 
     <style name="ThemeOverlay.App.TimePicker" parent="Widget.Material3.MaterialTimePicker.Clock">

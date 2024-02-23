@@ -2,5 +2,5 @@
 <resources>
     <color name="activity_bg_color">@color/darkBlue</color>
     <color name="text_color">@color/darkBlue</color>
-    <color name="bottom_nav_bg_color">@color/dark</color>
+    <color name="bottom_nav_bg_color">#07264E</color>
 </resources>

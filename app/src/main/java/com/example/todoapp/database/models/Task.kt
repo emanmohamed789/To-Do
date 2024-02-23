@@ -12,6 +12,5 @@ data class Task(
     val title: String?,
     val description: String?,
     val date: Date?,
-    var isDone: Boolean? = false
-
+    var isDone: Boolean?
 )

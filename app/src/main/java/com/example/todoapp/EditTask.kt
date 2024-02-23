@@ -1,37 +1,46 @@
-package com.example.todoapp.fragments
+package com.example.todoapp
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
 import android.widget.DatePicker
 import android.widget.TimePicker
-import com.example.todoapp.OnTaskAddedListener
-import com.example.todoapp.R
-import com.example.todoapp.clearTime
+import androidx.appcompat.app.AppCompatActivity
 import com.example.todoapp.database.TaskDatabase
 import com.example.todoapp.database.models.Task
-import com.example.todoapp.databinding.FragmentAddTaskBinding
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.example.todoapp.databinding.ContentTaskDetailsBinding
+import com.example.todoapp.fragments.TasksListFragment
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
-class AddTaskBottomSheet : BottomSheetDialogFragment() {
-    lateinit var binding: FragmentAddTaskBinding
+class EditTask : AppCompatActivity() {
+
+    lateinit var binding: ContentTaskDetailsBinding
     lateinit var calendar: Calendar
-    var onTaskAddedListener: OnTaskAddedListener? = null
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentAddTaskBinding.inflate(inflater)
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    lateinit var taskListFragment: TasksListFragment
+    var onTaskEditedListener: OnTaskEditedListener? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ContentTaskDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val title = intent.getStringExtra("title")
+        val description = intent.getStringExtra("desc")
+        val date = intent.getLongExtra("date", 0)
+        val id = intent.getIntExtra("id", 0)
+
+        binding.title.editableText.append(title)
+        binding.description.editableText.append(description)
+
+        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateAsString = simpleDateFormat.format(date)
+        binding.selectDateTv.text = dateAsString
+
         calendar = Calendar.getInstance()
         binding.selectTimeTv.setOnClickListener {
             selectTime()
@@ -39,22 +48,31 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
         binding.selectDateTv.setOnClickListener {
             selectDate()
         }
-        binding.addTaskBtn.setOnClickListener {
+        binding.btnSave.setOnClickListener {
+
+            Log.d("save", "")
             if (validateData()) {
                 calendar.clearTime()
                 val task = Task(
+                    id = id,
                     title = binding.title.text.toString(),
                     description = binding.description.text.toString(),
                     date = calendar.time,
                     isDone = false
                 )
-                TaskDatabase
-                    .getInstance(requireContext())
-                    .getTaskDao()
-                    .insertTask(task)
-                onTaskAddedListener?.onTaskAdded(calendar.time)
-                dismiss()
+                Log.d("save", "$task")
 
+                TaskDatabase
+                    .getInstance(this)
+                    .getTaskDao()
+                    .updateTask(task)
+
+                // After updating the task
+                val editedDate = task.date?.time ?: 0
+                val resultIntent = Intent()
+                resultIntent.putExtra("editedDate", editedDate)
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
             }
         }
     }
@@ -84,7 +102,7 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
 
     private fun selectDate() {
         val picker = DatePickerDialog(
-            requireContext(), object : DatePickerDialog.OnDateSetListener {
+            this, object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(
                     view: DatePicker?,
                     year: Int,
@@ -108,7 +126,7 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
 
     private fun selectTime() {
         val picker = TimePickerDialog(
-            requireContext(), object : TimePickerDialog.OnTimeSetListener {
+            this, object : TimePickerDialog.OnTimeSetListener {
                 override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     calendar.set(Calendar.MINUTE, minute)
@@ -122,5 +140,4 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
         )
         picker.show()
     }
-
 }

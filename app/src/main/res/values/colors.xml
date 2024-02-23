@@ -7,7 +7,7 @@
     <color name="lightGreen">#DEEBDA</color>
     <color name="darkBlue">#060E1E</color>
     <color name="blue">#5D9BEB</color>
-    <color name="green">#3A803C</color>
+    <color name="green">#61E657</color>
     <color name="red">#EB4B4B</color>
     <color name="activity_bg_color">@color/lightGreen</color>
     <color name="text_color">@color/white</color>
