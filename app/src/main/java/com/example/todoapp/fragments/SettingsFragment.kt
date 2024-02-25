@@ -2,7 +2,6 @@ package com.example.todoapp.fragments
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import com.example.todoapp.R
 import com.example.todoapp.databinding.FragmentSettingsBinding
 import java.util.Locale
 
+@Suppress("DEPRECATION")
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
@@ -30,7 +30,7 @@ class SettingsFragment : Fragment() {
 
         val languages = resources.getStringArray(R.array.languages)
         val languageAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, languages)
+            ArrayAdapter(requireContext(), R.layout.drop_down_item, languages)
         binding.autoCompleteTVLanguages.setAdapter(languageAdapter)
 
         val modes = resources.getStringArray(R.array.modes)
@@ -39,7 +39,6 @@ class SettingsFragment : Fragment() {
 
         binding.autoCompleteTVLanguages.setOnItemClickListener { _, _, position, _ ->
             val selectedLanguage = languages[position]
-            Log.d("language", "$selectedLanguage")
             changeLanguage(selectedLanguage)
         }
 
@@ -51,17 +50,15 @@ class SettingsFragment : Fragment() {
 
     private fun changeLanguage(selectedLanguage: String?) {
         when (selectedLanguage) {
-            "Arabic" -> setLanguage("ar")
-            "English" -> setLanguage("en")
-            "العربيه" -> setLanguage("ar")
-            "الانجليزيه" -> setLanguage("en")
+            "Arabic", "العربيه" -> setLanguage("ar")
+            "English", "الانجليزيه" -> setLanguage("en")
         }
     }
 
     private fun changeMode(mode: String) {
         when (mode) {
-            "Light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            "Dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            "Light", "الوضع الضوء" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            "Dark", "الوضع المظلم" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
 
@@ -72,7 +69,7 @@ class SettingsFragment : Fragment() {
         configuration.setLocale(locale)
 
         val displayMetrics = resources.displayMetrics
-        val context = requireContext().createConfigurationContext(configuration)
+
         resources.updateConfiguration(configuration, displayMetrics)
 
         val editor = requireActivity().getPreferences(0).edit()

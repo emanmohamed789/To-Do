@@ -10,23 +10,12 @@ import com.example.todoapp.fragments.TasksListFragment
 import java.util.Date
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     lateinit var taskListFragment: TasksListFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val editTask = EditTask()
-        editTask.onTaskEditedListener = object : OnTaskEditedListener {
-            override fun onTaskEdited(calendar: Date) {
-                if (editTask.calendar.time == taskListFragment.calender.time)
-                    taskListFragment.getDataByDate(calendar)
-                else {
-                    taskListFragment.binding.calendarView.selectedDate = null
-                    taskListFragment.getData()
-                }
-            }
-        }
         binding.fabAddTask.setOnClickListener {
             val addTaskBottomSheet = AddTaskBottomSheet()
             addTaskBottomSheet.onTaskAddedListener = object : OnTaskAddedListener {

@@ -10,7 +10,6 @@ import com.example.todoapp.R
 import com.example.todoapp.database.TaskDatabase
 import com.example.todoapp.database.models.Task
 import com.example.todoapp.databinding.ItemTaskBinding
-import com.zerobranch.layout.SwipeLayout
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -28,23 +27,16 @@ class TaskAdapter(private var tasksList: List<Task>?) : Adapter<TaskAdapter.Task
     override fun onBindViewHolder(holder: TasksViewHolder, position: Int) {
         val item = tasksList?.get(position) ?: return
         holder.bind(item)
-        holder.binding.swipeLayout.setOnActionsListener(object : SwipeLayout.SwipeActionsListener {
-            override fun onOpen(direction: Int, isContinuous: Boolean) {
-                if (direction == SwipeLayout.RIGHT) {
-                    holder.binding.swipeLayout.close(true)
-                    onDeleteItem?.onDeleteClick(item, tasksList!!.indexOf(item))
-                    notifyItemRemoved(tasksList?.indexOf(item)!!)
-                }
-                if (direction == SwipeLayout.LEFT) {
-                    holder.binding.swipeLayout.close(true)
-                    onEditClick?.onEditItemClick(item, tasksList!!.indexOf(item))
-                    updateData(tasksList)
-                }
-            }
-
-            override fun onClose() {
-            }
-        })
+        holder.binding.imageForDelete.setOnClickListener {
+            holder.binding.swipeLayout.close(true)
+            onDeleteItem?.onDeleteClick(item, tasksList!!.indexOf(item))
+            notifyItemRemoved(tasksList?.indexOf(item)!!)
+        }
+        holder.binding.editTextSwipe.setOnClickListener {
+            holder.binding.swipeLayout.close(true)
+            onEditClick?.onEditItemClick(item, tasksList!!.indexOf(item))
+            updateData(tasksList)
+        }
     }
 
     fun updateData(tasksList: List<Task>?) {
@@ -64,7 +56,7 @@ class TaskAdapter(private var tasksList: List<Task>?) : Adapter<TaskAdapter.Task
         fun onDeleteClick(task: Task, position: Int)
     }
 
-    class TasksViewHolder(val binding: ItemTaskBinding, val context: Context) :
+    class TasksViewHolder(val binding: ItemTaskBinding, private val context: Context) :
         ViewHolder(binding.root) {
 
         fun bind(task: Task) {
@@ -80,11 +72,11 @@ class TaskAdapter(private var tasksList: List<Task>?) : Adapter<TaskAdapter.Task
         private fun body(task: Task) {
             binding.title.text = task.title
             val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val dateAsString = simpleDateFormat.format(task.date)
+            val dateAsString = simpleDateFormat.format(task.date!!)
             binding.time.text = dateAsString
             binding.btnTaskIsDone.setOnClickListener {
                 doneClick()
-                var taskUpdate = Task(
+                val taskUpdate = Task(
                     id = task.id,
                     title = task.title,
                     description = task.description,

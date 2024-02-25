@@ -8,4 +8,3 @@ fun Calendar.clearTime() {
     set(Calendar.SECOND, 0)
     set(Calendar.MILLISECOND, 0)
 }
-

@@ -28,8 +28,8 @@
     </string-array>
 
     <string-array name="modes">
-        <item>صباحي</item>
-        <item>ليلي</item>
+        <item>وضع الضوء</item>
+        <item>الوضع المظلم</item>
     </string-array>
 
 </resources>

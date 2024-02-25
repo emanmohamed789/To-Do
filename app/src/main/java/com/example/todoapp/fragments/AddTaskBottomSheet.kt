@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TimePicker
 import com.example.todoapp.OnTaskAddedListener
 import com.example.todoapp.R
 import com.example.todoapp.clearTime
@@ -18,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.Calendar
 
 class AddTaskBottomSheet : BottomSheetDialogFragment() {
-    lateinit var binding: FragmentAddTaskBinding
+    private lateinit var binding: FragmentAddTaskBinding
     lateinit var calendar: Calendar
     var onTaskAddedListener: OnTaskAddedListener? = null
     override fun onCreateView(
@@ -84,19 +82,12 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
 
     private fun selectDate() {
         val picker = DatePickerDialog(
-            requireContext(), object : DatePickerDialog.OnDateSetListener {
-                override fun onDateSet(
-                    view: DatePicker?,
-                    year: Int,
-                    month: Int,
-                    dayOfMonth: Int
-                ) {
-                    calendar.set(Calendar.YEAR, year)
-                    calendar.set(Calendar.MONTH, month)
-                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    binding.selectDateTv.text = "$dayOfMonth / ${month + 1} / $year"
-                }
-
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                binding.selectDateTv.text = "$dayOfMonth / ${month + 1} / $year"
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -108,13 +99,11 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
 
     private fun selectTime() {
         val picker = TimePickerDialog(
-            requireContext(), object : TimePickerDialog.OnTimeSetListener {
-                override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                    calendar.set(Calendar.MINUTE, minute)
-                    binding.selectTimeTv.text = "$hourOfDay : $minute"
-                }
-
+            requireContext(),
+            { _, hourOfDay, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+                binding.selectTimeTv.text = "$hourOfDay : $minute"
             },
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),

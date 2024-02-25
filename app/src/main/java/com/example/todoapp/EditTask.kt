@@ -6,24 +6,19 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.DatePicker
-import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todoapp.database.TaskDatabase
 import com.example.todoapp.database.models.Task
 import com.example.todoapp.databinding.ContentTaskDetailsBinding
-import com.example.todoapp.fragments.TasksListFragment
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 class EditTask : AppCompatActivity() {
 
-    lateinit var binding: ContentTaskDetailsBinding
-    lateinit var calendar: Calendar
+    private lateinit var binding: ContentTaskDetailsBinding
+    private lateinit var calendar: Calendar
 
-    lateinit var taskListFragment: TasksListFragment
-    var onTaskEditedListener: OnTaskEditedListener? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ContentTaskDetailsBinding.inflate(layoutInflater)
@@ -102,19 +97,11 @@ class EditTask : AppCompatActivity() {
 
     private fun selectDate() {
         val picker = DatePickerDialog(
-            this, object : DatePickerDialog.OnDateSetListener {
-                override fun onDateSet(
-                    view: DatePicker?,
-                    year: Int,
-                    month: Int,
-                    dayOfMonth: Int
-                ) {
-                    calendar.set(Calendar.YEAR, year)
-                    calendar.set(Calendar.MONTH, month)
-                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    binding.selectDateTv.text = "$dayOfMonth / ${month + 1} / $year"
-                }
-
+            this, { _, year, month, dayOfMonth ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                binding.selectDateTv.text = "$dayOfMonth / ${month + 1} / $year"
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -126,13 +113,10 @@ class EditTask : AppCompatActivity() {
 
     private fun selectTime() {
         val picker = TimePickerDialog(
-            this, object : TimePickerDialog.OnTimeSetListener {
-                override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                    calendar.set(Calendar.MINUTE, minute)
-                    binding.selectTimeTv.text = "$hourOfDay : $minute"
-                }
-
+            this, { _, hourOfDay, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+                binding.selectTimeTv.text = "$hourOfDay : $minute"
             },
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),

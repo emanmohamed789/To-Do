@@ -16,7 +16,7 @@ abstract class TaskDatabase : RoomDatabase() {
 
     companion object {
         private var INSTANCE: TaskDatabase? = null
-        private val DATABASE_NAME = "Tasks Database"
+        private const val DATABASE_NAME = "Tasks Database"
 
         fun getInstance(context: Context): TaskDatabase {
             if (INSTANCE == null) {

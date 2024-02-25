@@ -24,9 +24,7 @@ class TasksListFragment : Fragment() {
     lateinit var adapter: TaskAdapter
     lateinit var calender: Calendar
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentTasksBinding.inflate(inflater)
         return binding.root
@@ -38,10 +36,7 @@ class TasksListFragment : Fragment() {
         calender = Calendar.getInstance()
         binding.rvTasks.adapter = adapter
 
-        val list = TaskDatabase
-            .getInstance(requireContext())
-            .getTaskDao()
-            .getAllTasks()
+        val list = TaskDatabase.getInstance(requireContext()).getTaskDao().getAllTasks()
         adapter.updateData(list)
 
         binding.calendarView.setOnDateChangedListener { _, date, _ ->
@@ -58,7 +53,7 @@ class TasksListFragment : Fragment() {
 
         adapter.onDeleteItem = object : TaskAdapter.OnItemDeleteListener {
             override fun onDeleteClick(task: Task, position: Int) {
-                var taskUpdate = Task(
+                val taskUpdate = Task(
                     id = task.id,
                     title = task.title,
                     description = task.description,
@@ -67,18 +62,15 @@ class TasksListFragment : Fragment() {
                 )
                 TaskDatabase.getInstance(requireContext()).getTaskDao().deleteTask(taskUpdate)
                 adapter.notifyDataSetChanged()
-                if (binding.calendarView.selectedDate == null)
-                    getData()
-                else
-                    getDataByDate(calender.time)
+                if (binding.calendarView.selectedDate == null) getData()
+                else getDataByDate(calender.time)
             }
         }
 
         val editTaskLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    if (binding.calendarView.selectedDate == null)
-                        getData()
+                    if (binding.calendarView.selectedDate == null) getData()
                     else {
                         getDataByDate(calender.time)
                     }
@@ -98,18 +90,13 @@ class TasksListFragment : Fragment() {
     }
 
     fun getData() {
-        val updatedList = TaskDatabase
-            .getInstance(requireContext())
-            .getTaskDao()
-            .getAllTasks()
+        val updatedList = TaskDatabase.getInstance(requireContext()).getTaskDao().getAllTasks()
         adapter.updateData(updatedList)
     }
 
     fun getDataByDate(time: Date) {
-        val updatedList = TaskDatabase
-            .getInstance(this.requireContext())
-            .getTaskDao()
-            .getAllTasksByDate(time)
+        val updatedList =
+            TaskDatabase.getInstance(this.requireContext()).getTaskDao().getAllTasksByDate(time)
         adapter.updateData(updatedList)
     }
 }
