@@ -18,9 +18,15 @@
     <string name="save">حفظ</string>
     <string name="language">اللغة</string>
     <string name="mode">وضع الشاشة</string>
-    <string name="light">Light</string>
-    <string name="dark">Dark</string>
-    <string name="english">English</string>
+    <string name="light">وضع الضوء</string>
+    <string name="dark">الوضع المظلم</string>
+    <string name="english">الانجليزيه</string>
+    <string name="arabic">العربيه</string>
+    <string name="mode_light">وضع الضوء</string>
+    <string name="mode_dark">الوضع المظلم</string>
+    <string name="language_arabic">العربيه</string>
+    <string name="language_english">الانجليزيه</string>
+
 
     <string-array name="languages">
         <item>الانجليزيه</item>

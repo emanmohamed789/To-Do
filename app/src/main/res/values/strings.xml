@@ -20,6 +20,11 @@
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="mode_light">Light</string>
+    <string name="mode_dark">Dark</string>
+    <string name="language_arabic">Arabic</string>
+    <string name="language_english">English</string>
 
     <string-array name="languages">
         <item>English</item>
